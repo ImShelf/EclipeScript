@@ -1,1 +1,1 @@
-script.lua
+print("EclipseScript loaded!")
