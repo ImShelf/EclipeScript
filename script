@@ -1,160 +1,158 @@
---// EclipseScript v1
---// UI only
+--[[
+  EclipseScript + RockBugHub — Full Bundle
+  Запуск: loadstring(game:HttpGet("https://raw.githubusercontent.com/ВАШ_АККАУНТ/НАЗВАНИЕ_РЕПО/main/loader.lua", true))()
+]]
 
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
+-- Конфигурация
+local CONFIG = {
+    ECLIPSE_URL = "https://raw.githubusercontent.com/ImShelf/EclipeScript/refs/heads/main/script", -- Оригинальный EclipseScript (UI)
+    ROCKBUG_URL = "https://raw.githubusercontent.com/bastra-gg/PetAlignHunb/main/ML_TradeOnlyFix_v2.lua", -- Оригинальный RockBugHub
+    VERSION = "1.0.0"
+}
 
-local player = Players.LocalPlayer
+-- Загрузчик EclipseScript UI с привязкой к RockBugHub
+local function loadEclipseUI()
+    local Players = game:GetService("Players")
+    local UserInputService = game:GetService("UserInputService")
+    local player = Players.LocalPlayer
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "EclipseScript"
-gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
+    -- GUI
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "EclipseScript"
+    gui.ResetOnSpawn = false
+    gui.Parent = player:WaitForChild("PlayerGui")
 
--- Main window
-local main = Instance.new("Frame")
-main.Size = UDim2.fromOffset(430, 280)
-main.Position = UDim2.fromScale(0.5, 0.5)
-main.AnchorPoint = Vector2.new(0.5, 0.5)
-main.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
-main.BorderSizePixel = 0
-main.Parent = gui
+    local main = Instance.new("Frame")
+    main.Size = UDim2.fromOffset(430, 360)
+    main.Position = UDim2.fromScale(0.5, 0.5)
+    main.AnchorPoint = Vector2.new(0.5, 0.5)
+    main.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+    main.BorderSizePixel = 0
+    main.Parent = gui
 
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 14)
-corner.Parent = main
+    Instance.new("UICorner").CornerRadius = UDim.new(0, 14)
+    Instance.new("UICorner").Parent = main
 
-local stroke = Instance.new("UIStroke")
-stroke.Color = Color3.fromRGB(95, 70, 180)
-stroke.Thickness = 1.5
-stroke.Transparency = 0.25
-stroke.Parent = main
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(95, 70, 180)
+    stroke.Thickness = 1.5
+    stroke.Transparency = 0.25
+    stroke.Parent = main
 
--- Top bar
-local top = Instance.new("Frame")
-top.Size = UDim2.new(1, 0, 0, 55)
-top.BackgroundTransparency = 1
-top.Parent = main
+    -- Верхняя панель
+    local top = Instance.new("Frame")
+    top.Size = UDim2.new(1, 0, 0, 55)
+    top.BackgroundTransparency = 1
+    top.Parent = main
 
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, -70, 1, 0)
-title.Position = UDim2.fromOffset(20, 0)
-title.BackgroundTransparency = 1
-title.Text = "☾  EclipseScript"
-title.TextColor3 = Color3.fromRGB(235, 230, 255)
-title.TextSize = 20
-title.Font = Enum.Font.GothamBold
-title.TextXAlignment = Enum.TextXAlignment.Left
-title.Parent = top
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, -70, 1, 0)
+    title.Position = UDim2.fromOffset(20, 0)
+    title.BackgroundTransparency = 1
+    title.Text = "☾ EclipseScript | RockBugHub"
+    title.TextColor3 = Color3.fromRGB(235, 230, 255)
+    title.TextSize = 18
+    title.Font = Enum.Font.GothamBold
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = top
 
-local close = Instance.new("TextButton")
-close.Size = UDim2.fromOffset(38, 38)
-close.Position = UDim2.new(1, -48, 0, 8)
-close.BackgroundColor3 = Color3.fromRGB(35, 32, 45)
-close.Text = "×"
-close.TextColor3 = Color3.fromRGB(220, 215, 235)
-close.TextSize = 24
-close.Font = Enum.Font.GothamBold
-close.Parent = top
+    -- Кнопка закрытия
+    local close = Instance.new("TextButton")
+    close.Size = UDim2.fromOffset(38, 38)
+    close.Position = UDim2.new(1, -48, 0, 8)
+    close.BackgroundColor3 = Color3.fromRGB(35, 32, 45)
+    close.Text = "×"
+    close.TextColor3 = Color3.fromRGB(220, 215, 235)
+    close.TextSize = 24
+    close.Font = Enum.Font.GothamBold
+    close.Parent = top
+    Instance.new("UICorner").CornerRadius = UDim.new(0, 10)
+    Instance.new("UICorner").Parent = close
+    close.MouseButton1Click:Connect(function() gui:Destroy() end)
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 10)
-closeCorner.Parent = close
+    -- Контент
+    local content = Instance.new("Frame")
+    content.Size = UDim2.new(1, -30, 1, -75)
+    content.Position = UDim2.fromOffset(15, 65)
+    content.BackgroundTransparency = 1
+    content.Parent = main
 
-close.MouseButton1Click:Connect(function()
-    gui:Destroy()
-end)
+    local welcome = Instance.new("TextLabel")
+    welcome.Size = UDim2.new(1, 0, 0, 30)
+    welcome.BackgroundTransparency = 1
+    welcome.Text = "Запусти ядро через кнопку"
+    welcome.TextColor3 = Color3.fromRGB(210, 205, 225)
+    welcome.TextSize = 16
+    welcome.Font = Enum.Font.GothamSemibold
+    welcome.TextXAlignment = Enum.TextXAlignment.Left
+    welcome.Parent = content
 
--- Content
-local content = Instance.new("Frame")
-content.Size = UDim2.new(1, -30, 1, -75)
-content.Position = UDim2.fromOffset(15, 65)
-content.BackgroundTransparency = 1
-content.Parent = main
+    -- Кнопка загрузки RockBugHub
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 0, 48)
+    button.Position = UDim2.fromOffset(0, 45)
+    button.BackgroundColor3 = Color3.fromRGB(92, 65, 175)
+    button.Text = "▶ Загрузить RockBugHub"
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 16
+    button.Font = Enum.Font.GothamBold
+    button.Parent = content
+    Instance.new("UICorner").CornerRadius = UDim.new(0, 10)
+    Instance.new("UICorner").Parent = button
 
-local welcome = Instance.new("TextLabel")
-welcome.Size = UDim2.new(1, 0, 0, 35)
-welcome.BackgroundTransparency = 1
-welcome.Text = "Welcome to EclipseScript"
-welcome.TextColor3 = Color3.fromRGB(210, 205, 225)
-welcome.TextSize = 18
-welcome.Font = Enum.Font.GothamSemibold
-welcome.TextXAlignment = Enum.TextXAlignment.Left
-welcome.Parent = content
-
-local info = Instance.new("TextLabel")
-info.Size = UDim2.new(1, 0, 0, 30)
-info.Position = UDim2.fromOffset(0, 38)
-info.BackgroundTransparency = 1
-info.Text = "Your first custom interface."
-info.TextColor3 = Color3.fromRGB(145, 140, 160)
-info.TextSize = 14
-info.Font = Enum.Font.Gotham
-info.TextXAlignment = Enum.TextXAlignment.Left
-info.Parent = content
-
--- Button
-local button = Instance.new("TextButton")
-button.Size = UDim2.new(1, 0, 0, 48)
-button.Position = UDim2.fromOffset(0, 82)
-button.BackgroundColor3 = Color3.fromRGB(92, 65, 175)
-button.Text = "Test Button"
-button.TextColor3 = Color3.fromRGB(255, 255, 255)
-button.TextSize = 16
-button.Font = Enum.Font.GothamBold
-button.Parent = content
-
-local buttonCorner = Instance.new("UICorner")
-buttonCorner.CornerRadius = UDim.new(0, 10)
-buttonCorner.Parent = button
-
-button.MouseButton1Click:Connect(function()
-    button.Text = "✓ EclipseScript works!"
-    
-    task.delay(1.5, function()
-        if button.Parent then
-            button.Text = "Test Button"
+    button.MouseButton1Click:Connect(function()
+        button.Text = "⏳ Загрузка..."
+        button.BackgroundColor3 = Color3.fromRGB(200, 150, 50)
+        local success, err = pcall(function()
+            loadstring(game:HttpGet(CONFIG.ROCKBUG_URL, true))()
+        end)
+        if success then
+            button.Text = "✓ Ядро загружено"
+            button.BackgroundColor3 = Color3.fromRGB(70, 180, 90)
+        else
+            button.Text = "✗ Ошибка: " .. tostring(err):sub(1, 30)
+            button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+            task.delay(2, function()
+                if button.Parent then
+                    button.Text = "▶ Повторить"
+                    button.BackgroundColor3 = Color3.fromRGB(92, 65, 175)
+                end
+            end)
         end
     end)
-end)
 
--- Dragging
-local dragging = false
-local dragStart
-local startPosition
+    -- Перетаскивание
+    local dragging = false
+    local dragStart, startPosition
+    top.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPosition = main.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            main.Position = UDim2.new(startPosition.X.Scale, startPosition.X.Offset + delta.X, startPosition.Y.Scale, startPosition.Y.Offset + delta.Y)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+end
 
-top.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
-        
-        dragging = true
-        dragStart = input.Position
-        startPosition = main.Position
+-- Основной загрузчик
+local function main()
+    local success, err = pcall(function()
+        loadEclipseUI()
+    end)
+    if not success then
+        warn("[Eclipse+RockBug] Ошибка загрузки: " .. tostring(err))
     end
-end)
+end
 
-UserInputService.InputChanged:Connect(function(input)
-    if dragging and (
-        input.UserInputType == Enum.UserInputType.MouseMovement
-        or input.UserInputType == Enum.UserInputType.Touch
-    ) then
-        
-        local delta = input.Position - dragStart
-        
-        main.Position = UDim2.new(
-            startPosition.X.Scale,
-            startPosition.X.Offset + delta.X,
-            startPosition.Y.Scale,
-            startPosition.Y.Offset + delta.Y
-        )
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
-        
-        dragging = false
-    end
-end)
+-- Запуск
+pcall(main)
